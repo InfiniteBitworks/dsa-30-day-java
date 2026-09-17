@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>30 Days of DSA in Java</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#E9EDE6;
+  --panel:#F3F6F1;
+  --ink:#16211F;
+  --ink-soft:#5C6B66;
+  --rule:#CBD4C9;
+  --rule-soft:#DCE3D9;
+  --accent:#7A2F4B;
+  --accent-soft:#F0DEE4;
+  --done:#2E6B4F;
+  --code-bg:#E0E6DD;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#141A18;
+    --panel:#1B2220;
+    --ink:#E4EAE6;
+    --ink-soft:#93A39D;
+    --rule:#2C3734;
+    --rule-soft:#232B29;
+    --accent:#D98AA6;
+    --accent-soft:#3A2129;
+    --done:#63B591;
+    --code-bg:#202825;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#141A18;
+  --panel:#1B2220;
+  --ink:#E4EAE6;
+  --ink-soft:#93A39D;
+  --rule:#2C3734;
+  --rule-soft:#232B29;
+  --accent:#D98AA6;
+  --accent-soft:#3A2129;
+  --done:#63B591;
+  --code-bg:#202825;
+}
+
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Archivo","Helvetica Neue",Arial,sans-serif;
+  font-size:16.5px;
+  line-height:1.6;
+}
+.wrap{max-width:780px;margin:0 auto;padding:0 22px 96px;}
+
+/* ---- hero ---- */
+header{padding:64px 0 34px;}
+.kicker{
+  font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  font-size:.78rem;color:var(--ink-soft);letter-spacing:.02em;margin:0 0 18px;
+}
+h1{
+  font-family:"Fraunces",Georgia,serif;
+  font-weight:600;
+  font-size:clamp(2.5rem,8vw,4rem);
+  line-height:1.02;
+  letter-spacing:-.02em;
+  margin:0 0 20px;
+}
+.lede{font-size:1.08rem;max-width:60ch;margin:0 0 14px;color:var(--ink);}
+.lede.soft{color:var(--ink-soft);font-size:1rem;}
+
+.meter{margin:34px 0 0;}
+.meter-track{
+  height:10px;background:var(--rule-soft);border:1px solid var(--rule);
+  position:relative;overflow:hidden;
+}
+.meter-fill{
+  height:100%;width:0%;background:var(--accent);
+  transition:width .35s cubic-bezier(.2,.7,.3,1);
+}
+.meter-read{
+  display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+  margin-top:10px;font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.8rem;
+  color:var(--ink-soft);flex-wrap:wrap;
+}
+button.reset{
+  font:inherit;font-size:.8rem;font-family:"JetBrains Mono",ui-monospace,monospace;
+  background:none;border:none;border-bottom:1px solid var(--rule);
+  color:var(--ink-soft);cursor:pointer;padding:0 0 1px;
+}
+button.reset:hover{color:var(--accent);border-color:var(--accent);}
+button.reset:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+
+/* ---- generic sections ---- */
+section{margin-top:56px;}
+h2{
+  font-family:"Fraunces",Georgia,serif;font-weight:600;
+  font-size:1.6rem;letter-spacing:-.01em;margin:0 0 18px;
+}
+h3{font-size:1rem;font-weight:600;margin:0 0 6px;}
+p{margin:0 0 14px;}
+
+.tiers{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);}
+.tier{background:var(--panel);padding:18px 20px;}
+.tier .dur{
+  font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.82rem;
+  color:var(--accent);margin-bottom:8px;
+}
+.tier p{margin:0;font-size:.95rem;color:var(--ink-soft);}
+@media(min-width:660px){.tiers{grid-template-columns:repeat(3,1fr);}}
+
+ul.rules{margin:0;padding-left:1.1em;}
+ul.rules li{margin-bottom:11px;}
+
+pre{
+  background:var(--code-bg);border:1px solid var(--rule);
+  padding:16px 18px;overflow-x:auto;margin:0;
+  font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  font-size:.82rem;line-height:1.75;
+}
+code{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:.86em;}
+p code,li code,.note code{background:var(--code-bg);padding:1px 5px;}
+
+/* ---- weeks & days ---- */
+.week{margin-top:52px;}
+.week-head{
+  border-top:2px solid var(--ink);padding-top:12px;margin-bottom:8px;
+  display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;
+}
+.week-num{
+  font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.82rem;color:var(--accent);
+}
+.week-title{font-family:"Fraunces",Georgia,serif;font-size:1.28rem;font-weight:600;letter-spacing:-.01em;}
+
+.day{
+  display:grid;grid-template-columns:62px 1fr;
+  border-bottom:1px solid var(--rule-soft);
+  padding:18px 0;
+}
+.day-num{
+  font-family:"Fraunces",Georgia,serif;font-size:1.9rem;font-weight:400;
+  color:var(--accent);line-height:1;padding-top:2px;
+  border-right:1px solid var(--rule-soft);
+}
+.day-body{padding-left:18px;min-width:0;}
+.day-top{display:flex;gap:11px;align-items:flex-start;}
+input[type=checkbox]{
+  appearance:none;-webkit-appearance:none;
+  width:17px;height:17px;flex:0 0 17px;margin:5px 0 0;
+  border:1.5px solid var(--rule);background:var(--panel);cursor:pointer;
+  position:relative;transition:background .15s,border-color .15s;
+}
+input[type=checkbox]:checked{background:var(--done);border-color:var(--done);}
+input[type=checkbox]:checked::after{
+  content:"";position:absolute;left:5px;top:1px;width:4px;height:9px;
+  border:solid var(--paper);border-width:0 2px 2px 0;transform:rotate(43deg);
+}
+.day-title{font-weight:600;font-size:1.02rem;line-height:1.35;cursor:pointer;}
+.day.done .day-title,.day.done .probs,.day.done .note{opacity:.42;}
+.day.done .day-num{opacity:.3;}
+.probs{margin:8px 0 0;font-size:.94rem;color:var(--ink-soft);}
+.probs b{color:var(--ink);font-weight:500;}
+.note{
+  margin:9px 0 0;font-size:.88rem;color:var(--ink-soft);
+  border-left:2px solid var(--accent-soft);padding-left:11px;
+}
+.day.rest .day-num{color:var(--ink-soft);}
+
+footer{margin-top:64px;padding-top:22px;border-top:1px solid var(--rule);
+  font-size:.88rem;color:var(--ink-soft);}
+
+@media(max-width:520px){
+  body{font-size:16px;}
+  .day{grid-template-columns:44px 1fr;}
+  .day-num{font-size:1.5rem;}
+  .day-body{padding-left:14px;}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <p class="kicker">30 sessions · 1–3 hours each · Java · starting from zero</p>
+  <h1>Thirty days of data structures</h1>
+  <p class="lede">A daily plan that takes you from loops and arrays to dynamic programming, built around roughly 115 problems and twelve patterns that keep reappearing.</p>
+  <p class="lede soft">Built for where you actually are: comfortable writing Java as a developer, but new to DSA as its own subject — you haven't solved problems before, and this isn't for an interview deadline. That means the pace favours understanding over speed, and week one spends real time on fundamentals other roadmaps rush past.</p>
+
+  <div class="meter">
+    <div class="meter-track"><div class="meter-fill" id="fill"></div></div>
+    <div class="meter-read">
+      <span id="count">0 of 30 sessions done</span>
+      <button class="reset" id="reset">Reset progress</button>
+    </div>
+  </div>
+</header>
+
+<section>
+  <h2>What a month actually buys you</h2>
+  <p>Thirty days at one to three hours is somewhere between 30 and 90 hours of work. That is not enough to master this material, and anyone selling you that is lying. Here is the real trade, for someone starting from scratch.</p>
+  <p>At the end you should be able to look at a new problem and recognise which of a dozen or so patterns it's built from, write the standard structures — stack, queue, tree, graph — without hesitating over the Java API, and solve the majority of easy and a fair share of medium problems on your own. That's a genuinely different skill level from where you're starting. Deep fluency, hard problems, and contest-level speed are a six-to-twelve month project this month becomes the foundation for.</p>
+  <p>The single thing that decides your outcome is not the plan. It is whether you re-solve the problems you failed. Most people skip that part, which is why most people plateau — and it matters even more starting from zero, because the first pass through a new pattern rarely sticks.</p>
+</section>
+
+<section>
+  <h2>How to run a session</h2>
+  <div class="tiers">
+    <div class="tier">
+      <div class="dur">1 hour</div>
+      <h3>The floor</h3>
+      <p>15 minutes learning the day's concept, then two problems. Skip the theory rabbit holes — you learn the structure by using it.</p>
+    </div>
+    <div class="tier">
+      <div class="dur">2 hours</div>
+      <h3>The target</h3>
+      <p>Everything above, plus two more problems and one re-solve of something from three days ago, from scratch, no notes.</p>
+    </div>
+    <div class="tier">
+      <div class="dur">3 hours</div>
+      <h3>The full session</h3>
+      <p>Everything above, plus read two editorials for problems you already solved to find a better approach, and hand-write the day's template into your notes.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Five rules that matter more than the schedule</h2>
+  <ul class="rules">
+    <li><b>The 25-minute rule.</b> Stuck for 25 minutes with no new idea? Read the solution, understand it, close the tab, and rewrite it from an empty file. Staring longer teaches you nothing; it just hurts.</li>
+    <li><b>Type every line.</b> Never copy-paste a solution, not even your own. Your hands need the reps as much as your head does.</li>
+    <li><b>Keep a failed list.</b> One text file. Every problem you couldn't finish alone goes in it, with the date. Re-solve each one after 3 days and again after 10. Day 30 exists for this list.</li>
+    <li><b>Say the approach out loud before coding.</b> Brute force first, then its complexity, then the improvement. This is how you catch a flawed idea before you've spent twenty minutes coding it — silent coding hides gaps in your own thinking.</li>
+    <li><b>Miss a day, don't miss two.</b> If you fall behind, drop the optional problems rather than skipping days. Continuity beats volume.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>The Java you want in your fingers</h2>
+  <p>Learn these cold in week one. Fumbling API calls is what makes an easy problem feel hard — the syntax should be invisible so all your thinking goes toward the actual logic.</p>
+<pre>// counting
+Map&lt;Character,Integer&gt; freq = new HashMap&lt;&gt;();
+freq.merge(c, 1, Integer::sum);
+freq.getOrDefault(c, 0);
+
+// grouping
+Map&lt;String,List&lt;String&gt;&gt; g = new HashMap&lt;&gt;();
+g.computeIfAbsent(key, k -&gt; new ArrayList&lt;&gt;()).add(word);
+
+// stack AND queue — use ArrayDeque, never Stack or LinkedList
+Deque&lt;Integer&gt; stack = new ArrayDeque&lt;&gt;();   // push / pop / peek
+Deque&lt;Integer&gt; queue = new ArrayDeque&lt;&gt;();   // offerLast / pollFirst
+
+// heap
+PriorityQueue&lt;int[]&gt; pq = new PriorityQueue&lt;&gt;((a,b) -&gt; a[1] - b[1]); // min by a[1]
+
+// sorting 2D arrays — Integer.compare avoids overflow, subtraction doesn't
+Arrays.sort(intervals, (a,b) -&gt; Integer.compare(a[0], b[0]));
+
+// strings
+StringBuilder sb = new StringBuilder();   // never use += inside a loop
+char[] cs = s.toCharArray();
+int[] count = new int[26];                // faster than a map for a–z
+
+// the two lines people get wrong
+int mid = lo + (hi - lo) / 2;             // not (lo + hi) / 2
+if (a.equals(b))                          // not a == b, for Integer above 127
+</pre>
+</section>
+
+<div id="plan"></div>
+
+<footer>
+  <p>Problem names are LeetCode titles. Progress is saved in this browser only — it won't follow you to another device, and clearing site data clears it.</p>
+</footer>
+
+</div>
+
+<script>
+const WEEKS = [
+{n:1,title:"Arrays, strings, and the window patterns",days:[
+ {d:1,t:"Complexity and the Java toolkit",p:"<b>Two Sum</b>, <b>Contains Duplicate</b>, <b>Best Time to Buy and Sell Stock</b>",note:"Spend the first 20 minutes able to state the time and space cost of any loop you write. Then tour HashMap, ArrayList, ArrayDeque and PriorityQueue — you'll use these five containers all month."},
+ {d:2,t:"Array traversal patterns",p:"<b>Maximum Subarray</b>, <b>Move Zeroes</b>, <b>Product of Array Except Self</b>, <b>Rotate Array</b>",note:"Two of these are solved by a left-to-right pass followed by a right-to-left pass. Notice that, because it comes back constantly."},
+ {d:3,t:"Two pointers",p:"<b>Valid Palindrome</b>, <b>Two Sum II</b>, <b>3Sum</b>, <b>Container With Most Water</b>",note:"Sorted input is the signal. For 3Sum, the duplicate-skipping loop is the whole difficulty — write it carefully rather than guessing."},
+ {d:4,t:"Sliding window",p:"<b>Longest Substring Without Repeating Characters</b>, <b>Minimum Size Subarray Sum</b>, <b>Max Consecutive Ones III</b>, <b>Permutation in String</b>",note:"One template covers all four: expand right every step, shrink from left while the window is invalid, record the answer. Write it once and reuse it."},
+ {d:5,t:"Hashing and prefix sums",p:"<b>Subarray Sum Equals K</b>, <b>Group Anagrams</b>, <b>Longest Consecutive Sequence</b>, <b>Range Sum Query – Immutable</b>",note:"Prefix sum plus a hash map of counts turns 'how many subarrays sum to k' from O(n²) into one pass. This combination is worth real study time."},
+ {d:6,t:"Strings",p:"<b>Valid Anagram</b>, <b>Longest Palindromic Substring</b>, <b>Longest Common Prefix</b>, <b>String Compression</b>",note:"Do the palindrome one with expand-around-centre, not DP. It's shorter, faster, and far easier to reproduce under pressure."},
+ {d:7,t:"Consolidate",p:"Re-solve four problems from this week cold, 20 minutes each, no notes open.",note:"Then write the two-pointer and sliding-window templates from memory on paper. Whatever you can't reproduce is what you actually haven't learnt yet."}
+]},
+{n:2,title:"Search, stacks, and linked lists",days:[
+ {d:8,t:"The binary search template",p:"<b>Binary Search</b>, <b>Search Insert Position</b>, <b>First Bad Version</b>, <b>Find First and Last Position of Element</b>",note:"Pick one lower-bound template and never deviate from it. Most binary search bugs come from people rewriting the boundary conditions from scratch every time."},
+ {d:9,t:"Binary search on the answer",p:"<b>Search in Rotated Sorted Array</b>, <b>Find Minimum in Rotated Sorted Array</b>, <b>Koko Eating Bananas</b>, <b>Capacity To Ship Packages Within D Days</b>",note:"The last two search a range of possible answers, not an array. The tell is a question shaped like 'what is the smallest x that still works'."},
+ {d:10,t:"Stacks",p:"<b>Valid Parentheses</b>, <b>Min Stack</b>, <b>Evaluate Reverse Polish Notation</b>, <b>Generate Parentheses</b>",note:"Min Stack teaches you to carry extra state alongside each element. Generate Parentheses is really backtracking in disguise — a preview of week four."},
+ {d:11,t:"Monotonic stack and deque",p:"<b>Daily Temperatures</b>, <b>Next Greater Element II</b>, <b>Sliding Window Maximum</b>, <b>Largest Rectangle in Histogram</b>",note:"Push indices, not values. This is a hard day; the histogram problem is genuinely difficult and it's fine to read the solution and rebuild it."},
+ {d:12,t:"Linked lists: the core moves",p:"<b>Reverse Linked List</b>, <b>Merge Two Sorted Lists</b>, <b>Linked List Cycle</b>, <b>Middle of the Linked List</b>",note:"A dummy head node removes most edge cases. Memorise the prev/curr/next reversal loop until you can write it without thinking."},
+ {d:13,t:"Linked lists: combinations",p:"<b>Remove Nth Node From End</b>, <b>Reorder List</b>, <b>Add Two Numbers</b>, <b>LRU Cache</b>",note:"Reorder List is three earlier problems stacked: find middle, reverse second half, merge. LRU Cache is a hash map plus a doubly linked list you write yourself."},
+ {d:14,t:"Consolidate",p:"One easy and two mediums, timed, 75 minutes total, problems you haven't seen.",note:"Then reread every problem from the last two weeks where you needed a hint. Not solve — reread, and check you can explain the key idea in one sentence."}
+]},
+{n:3,title:"Trees, heaps, and graphs",days:[
+ {d:15,t:"Tree traversals",p:"<b>Binary Tree Inorder Traversal</b> (recursive and iterative), <b>Binary Tree Level Order Traversal</b>, <b>Maximum Depth of Binary Tree</b>",note:"For BFS, capture the queue size at the start of each level — that's how you keep levels separate. It appears in a dozen problems."},
+ {d:16,t:"Tree recursion patterns",p:"<b>Invert Binary Tree</b>, <b>Same Tree</b>, <b>Subtree of Another Tree</b>, <b>Diameter of Binary Tree</b>, <b>Balanced Binary Tree</b>",note:"Every tree problem is two questions: what do I pass down, and what do I return up. Diameter returns height but updates a running maximum on the side."},
+ {d:17,t:"Binary search trees",p:"<b>Validate Binary Search Tree</b>, <b>Lowest Common Ancestor of a BST</b>, <b>Kth Smallest Element in a BST</b>, <b>Insert into a BST</b>",note:"An inorder traversal of a BST comes out sorted. That single fact solves half of all BST problems, including Kth Smallest."},
+ {d:18,t:"Trees, harder",p:"<b>Lowest Common Ancestor of a Binary Tree</b>, <b>Binary Tree Right Side View</b>, <b>Path Sum II</b>, <b>Construct Binary Tree from Preorder and Inorder</b>",note:"Path Sum II introduces backtracking on a path list: add, recurse, then remove the last element. Keep that shape in mind for week four."},
+ {d:19,t:"Heaps",p:"<b>Kth Largest Element in an Array</b>, <b>Top K Frequent Elements</b>, <b>K Closest Points to Origin</b>, <b>Merge k Sorted Lists</b>, <b>Find Median from Data Stream</b>",note:"Anything phrased as 'top k' or 'k closest' is a heap of size k, giving O(n log k). The median problem uses two heaps facing each other — worth the extra time."},
+ {d:20,t:"Graphs on grids",p:"<b>Number of Islands</b>, <b>Max Area of Island</b>, <b>Rotting Oranges</b>, <b>Flood Fill</b>, <b>Clone Graph</b>",note:"Keep a directions array around. Rotting Oranges is multi-source BFS: seed the queue with every rotten cell before you start, don't loop one at a time."},
+ {d:21,t:"Ordering and components",p:"<b>Course Schedule</b>, <b>Course Schedule II</b>, <b>Number of Connected Components</b>, <b>Graph Valid Tree</b>, <b>Pacific Atlantic Water Flow</b>",note:"Learn Kahn's algorithm — indegrees plus a queue — for topological order. Then write a union-find with path compression, about fifteen lines, and keep it in your notes forever."}
+]},
+{n:4,title:"Recursion, dynamic programming, and review",days:[
+ {d:22,t:"Backtracking",p:"<b>Subsets</b>, <b>Permutations</b>, <b>Combination Sum</b>, <b>Letter Combinations of a Phone Number</b>",note:"The shape never changes: make a choice, recurse, undo the choice. Draw the recursion tree for Subsets on paper before coding it."},
+ {d:23,t:"Backtracking with constraints",p:"<b>Subsets II</b>, <b>Word Search</b>, <b>Palindrome Partitioning</b>, <b>N-Queens</b>",note:"To handle duplicates, sort first and skip an element when it equals the previous one and isn't the first pick at this level."},
+ {d:24,t:"One-dimensional DP",p:"<b>Climbing Stairs</b>, <b>Min Cost Climbing Stairs</b>, <b>House Robber</b>, <b>House Robber II</b>, <b>Coin Change</b>",note:"Always in this order: brute-force recursion, then add a memo array, then rewrite as a loop. Jumping straight to the loop is why DP feels impossible."},
+ {d:25,t:"More one-dimensional DP",p:"<b>Longest Increasing Subsequence</b>, <b>Word Break</b>, <b>Decode Ways</b>, <b>Partition Equal Subset Sum</b>",note:"Partition Equal Subset Sum is the knapsack pattern wearing a costume. Once you see it, a whole family of problems opens up."},
+ {d:26,t:"Two-dimensional DP",p:"<b>Unique Paths</b>, <b>Longest Common Subsequence</b>, <b>Coin Change II</b>, <b>Edit Distance</b>",note:"Before writing code, say what dp[i][j] means in one plain English sentence. If you can't, you don't have the recurrence yet and coding will not help."},
+ {d:27,t:"Greedy and intervals",p:"<b>Jump Game</b>, <b>Jump Game II</b>, <b>Merge Intervals</b>, <b>Insert Interval</b>, <b>Non-overlapping Intervals</b>, <b>Meeting Rooms II</b>",note:"Interval problems almost always start by sorting — by start time to merge, by end time to schedule the most events. Knowing which is the whole trick."},
+ {d:28,t:"Bits, tries, and odds and ends",p:"<b>Single Number</b>, <b>Number of 1 Bits</b>, <b>Counting Bits</b>, <b>Reverse Bits</b>, <b>Implement Trie</b>",note:"XOR cancels pairs, and n &amp; (n-1) clears the lowest set bit. In Java use >>> rather than >> when you don't want sign extension."},
+ {d:29,t:"Timed practice, no notes",p:"Two 45-minute sessions on problems you've never seen, medium difficulty, picked at random.",note:"Talk yourself through it the whole time: restate the problem, walk an example, give the brute force and its cost, improve it, code, then test on your example. This is the real test of whether the month's patterns actually transferred, separate from whether you're facing an interviewer or not."},
+ {d:30,t:"Repair and write it down",p:"Re-solve every problem on your failed list. Then build your own one-page cheat sheet from memory.",note:"Every template you can't reproduce without looking is your syllabus for next month. That list is more valuable than the thirty days behind you."}
+]}];
+
+const plan = document.getElementById('plan');
+let html = '';
+for (const w of WEEKS) {
+  html += '<div class="week"><div class="week-head"><span class="week-num">Week ' + w.n + '</span><span class="week-title">' + w.title + '</span></div>';
+  for (const d of w.days) {
+    const rest = (d.d % 7 === 0) ? ' rest' : '';
+    html += '<div class="day' + rest + '" id="row' + d.d + '">' +
+      '<div class="day-num">' + String(d.d).padStart(2,'0') + '</div>' +
+      '<div class="day-body"><div class="day-top">' +
+      '<input type="checkbox" id="d' + d.d + '" data-day="' + d.d + '">' +
+      '<label class="day-title" for="d' + d.d + '">' + d.t + '</label></div>' +
+      '<p class="probs">' + d.p + '</p>' +
+      '<p class="note">' + d.note + '</p></div></div>';
+  }
+  html += '</div>';
+}
+plan.innerHTML = html;
+
+const KEY = 'dsa30.progress';
+const boxes = [...document.querySelectorAll('input[type=checkbox]')];
+
+function load(){
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (e) { return []; }
+}
+function save(days){
+  try { localStorage.setItem(KEY, JSON.stringify(days)); } catch (e) {}
+}
+function paint(){
+  const n = boxes.filter(b => b.checked).length;
+  document.getElementById('fill').style.width = (n / 30 * 100) + '%';
+  document.getElementById('count').textContent =
+    n === 0 ? '0 of 30 sessions done — start today' :
+    n === 30 ? 'All 30 sessions done. Go write that cheat sheet.' :
+    n + ' of 30 sessions done';
+  for (const b of boxes) {
+    document.getElementById('row' + b.dataset.day).classList.toggle('done', b.checked);
+  }
+}
+
+const saved = load();
+for (const b of boxes) {
+  if (saved.includes(Number(b.dataset.day))) b.checked = true;
+  b.addEventListener('change', () => {
+    save(boxes.filter(x => x.checked).map(x => Number(x.dataset.day)));
+    paint();
+  });
+}
+paint();
+
+document.getElementById('reset').addEventListener('click', () => {
+  for (const b of boxes) b.checked = false;
+  save([]);
+  paint();
+});
+</script>
+</body>
+</html>
